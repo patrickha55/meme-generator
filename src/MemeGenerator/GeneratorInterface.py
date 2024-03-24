@@ -2,23 +2,23 @@ from abc import ABC, abstractmethod
 
 
 class GeneratorInterface(ABC):
-    """TODO: add doc
+    """Abstract base class for creating a meme generator class.
 
     Args:
-        ABC (_type_): _description_
+        ABC (_type_): Abstract base class.
     """
 
     @abstractmethod
     def make_meme(self, img_path: str, text: str, author: str, width=500) -> str:
-        """TODO: add doc
+        """Generate a meme from an image by resizing, attaching quote(text) and author to the resized image.
 
         Args:
-            img_path (str): _description_
-            text (str): _description_
-            author (str): _description_
-            width (int, optional): _description_. Defaults to 500.
+            img_path (str): Image's path.
+            text (str): Quote to display inside a meme.
+            author (str): Quote's author.
+            width (int, optional): Image width for resizing. Defaults to 500.
 
         Returns:
-            str: _description_
+            str: Generated meme's path.
         """
         pass
