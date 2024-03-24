@@ -1,3 +1,4 @@
+import os
 from typing import List
 from QuoteEngine.IngestorInterface import IngestorInterface
 from QuoteEngine.Quote import Quote
@@ -39,8 +40,7 @@ class PDFIngestor(IngestorInterface):
                         new_quote = Quote(split_line[0], split_line[1])
                         quotes.append(new_quote)
 
-            subprocess.run(
-                ['del', '-path', './QuoteEngine/tmp/pdf_text.txt'], shell=True)
+            os.remove(temp_text_file)
 
             return quotes
         except FileExistsError as err:
