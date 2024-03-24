@@ -8,10 +8,10 @@ from MemeGenerator.GeneratorException import GeneratorException
 
 
 class MemeEngine(GeneratorInterface):
-    """TODO: add doc
+    """Class for meme generation and image processing.
 
     Args:
-        GeneratorInterface (_type_): _description_
+        GeneratorInterface (_type_): ABC for creating a meme generator class.
     """
 
     datetime_format = '%d-%m-%y-%H-%M-%S'

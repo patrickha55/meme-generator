@@ -6,7 +6,7 @@ import os
 
 
 class IngestorInterface(ABC):
-    """Ingestor interface
+    """Interface for creating ingestors to consume different file type and generate quotes.
 
     Args:
         ABC (class): Helper

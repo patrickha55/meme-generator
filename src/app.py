@@ -13,31 +13,38 @@ app = Flask(__name__)
 meme = MemeEngine('./static')
 
 
-def setup():
-    """ Load all resources """
+def setup() -> tuple[List[Quote] | None, List[str] | None]:
+    """Load all resources for random meme generation.
 
-    quote_files = ['./_data/DogQuotes/DogQuotesTXT.txt',
-                   './_data/DogQuotes/DogQuotesDOCX.docx',
-                   './_data/DogQuotes/DogQuotesPDF.pdf',
-                   './_data/DogQuotes/DogQuotesCSV.csv']
+    Returns:
+        tuple[List[Quote] | None, List[str] | None]: List of quotes and images urls.
+    """
 
-    # quote_files variable
-    quotes: List[Quote] = []
+    try:
+        quote_files = ['./_data/DogQuotes/DogQuotesTXT.txt',
+                       './_data/DogQuotes/DogQuotesDOCX.docx',
+                       './_data/DogQuotes/DogQuotesPDF.pdf',
+                       './_data/DogQuotes/DogQuotesCSV.csv']
 
-    ingestor = Ingestor()
+        # quote_files variable
+        quotes: List[Quote] = []
 
-    for file in quote_files:
-        quotes.extend(ingestor.parse(file))
+        for file in quote_files:
+            quotes.extend(Ingestor.parse(file))
 
-    images_path = "./_data/photos/dog/"
+        images_path = "./_data/photos/dog/"
 
-    # images within the images images_path directory
-    imgs: List[str] = []
+        # images within the images images_path directory
+        imgs: List[str] = []
 
-    for image_path in os.listdir(images_path):
-        imgs.append(f'{images_path}{image_path}')
+        for image_path in os.listdir(images_path):
+            imgs.append(f'{images_path}{image_path}')
 
-    return quotes, imgs
+        return quotes, imgs
+    except Exception as err:
+        print(err)
+
+    return None, None
 
 
 quotes, imgs = setup()
@@ -45,16 +52,13 @@ quotes, imgs = setup()
 
 @app.route('/')
 def meme_rand():
-    """ Generate a random meme """
-
-    # @TODO:
-    # Use the random python standard library class to:
-    # 1. select a random image from imgs array
-    # 2. select a random quote from the quotes array
+    """ Generate a random meme. """
 
     img = imgs[random.randint(0, len(imgs) - 1)]
     quote = quotes[random.randint(0, len(quotes) - 1)]
+
     path = meme.make_meme(img, quote.body, quote.author)
+
     return render_template('meme.html', path=path)
 
 
@@ -68,21 +72,16 @@ def meme_form():
 def meme_post():
     """ Create a user defined meme """
 
-    # @TODO:
-    # 1. Use requests to save the image from the image_url
-    #    form param to a temp local file.
-    # 2. Use the meme object to generate a meme using this temp
-    #    file and the body and author form paramaters.
-    # 3. Remove the temporary saved image.
     img_url = request.form['image_url']
     body = request.form['body']
     author = request.form['author']
 
     response = requests.get(img_url)
+
     img_path = MemeEngine.reading_from_binary(response.content)
 
     path = meme.make_meme(img_path, body, author)
-    
+
     os.remove(img_path)
 
     return render_template('meme.html', path=path)

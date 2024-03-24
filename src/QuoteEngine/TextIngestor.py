@@ -5,10 +5,10 @@ from QuoteEngine.Quote import Quote
 
 
 class TextIngestor(IngestorInterface):
-    """_summary_
+    """Ingest a text file and generate quotes.
 
     Args:
-        IngestorInterface (_type_): _description_
+        IngestorInterface (_type_): Interface for creating ingestors to consume different file type and generate quotes
     """
 
     extensions = ['.txt']

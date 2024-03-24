@@ -8,7 +8,7 @@ import subprocess
 
 
 class PDFIngestor(IngestorInterface):
-    """Ingestor for extracting text from a PDF file and transform into Quote models.add()
+    """Ingestor for extracting text from a PDF file and transform into Quote models.
 
     Args:
         IngestorInterface (class): Ingestor ABC.
