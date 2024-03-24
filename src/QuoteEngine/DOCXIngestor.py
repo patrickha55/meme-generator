@@ -1,7 +1,7 @@
 from typing import List
-from IngestorInterface import IngestorInterface
-from Quote import Quote
-from IngestorException import IngestorException
+from QuoteEngine.IngestorInterface import IngestorInterface
+from QuoteEngine.Quote import Quote
+from QuoteEngine.IngestorException import IngestorException
 from docx import Document
 
 

@@ -1,10 +1,9 @@
 from typing import List
-from IngestorInterface import IngestorInterface
-from Quote import Quote
-from IngestorException import IngestorException
+from QuoteEngine.IngestorInterface import IngestorInterface
+from QuoteEngine.Quote import Quote
+from QuoteEngine.IngestorException import IngestorException
 
 import subprocess
-import pandas
 
 
 class PDFIngestor(IngestorInterface):
@@ -21,22 +20,27 @@ class PDFIngestor(IngestorInterface):
     @classmethod
     def parse(cls, path: str) -> List[Quote]:
         try:
-            temp_text_file = 'tmp/pdf_text.txt'
+            temp_text_file = './QuoteEngine/tmp/pdf_text.txt'
 
             if not cls.can_ingest(path):
                 raise IngestorException('Cannot ingest exception.')
 
             subprocess.run(
-                ['pdftotext', path, temp_text_file], shell=True)
+                ['pdftotext', '-layout',  path, temp_text_file], shell=True)
 
             quotes = []
-            df = pandas.readcsv(temp_text_file, header=0)
+            with open(temp_text_file, 'r') as f:
+                lines = f.readlines()
 
-            for index, row in df.iterrows():
-                new_quote = Quote(row[0], row[1])
-                quotes.append(new_quote)
+                for line in lines:
+                    if line != '' and line != '\x0c':
+                        split_line = [l.strip().strip('"')
+                                      for l in line.split('-')]
+                        new_quote = Quote(split_line[0], split_line[1])
+                        quotes.append(new_quote)
 
-            subprocess.run(['rm', temp_text_file], shell=True)
+            subprocess.run(
+                ['del', '-path', './QuoteEngine/tmp/pdf_text.txt'], shell=True)
 
             return quotes
         except FileExistsError as err:
