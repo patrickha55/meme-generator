@@ -1,4 +1,5 @@
 import datetime
+import io
 import os
 import random
 from MemeGenerator.GeneratorInterface import GeneratorInterface
@@ -7,6 +8,13 @@ from MemeGenerator.GeneratorException import GeneratorException
 
 
 class MemeEngine(GeneratorInterface):
+    """TODO: add doc
+
+    Args:
+        GeneratorInterface (_type_): _description_
+    """
+
+    datetime_format = '%d-%m-%y-%H-%M-%S'
 
     def __init__(self, output_dir: str):
         self.output_dir = output_dir
@@ -28,7 +36,7 @@ class MemeEngine(GeneratorInterface):
                 resized_im = ImageOps.contain(im, size)
 
                 text_size = tuple(
-                    [resized_im.height/random.randint(2, 4), resized_im.width/random.randint(2, 4)])
+                    [resized_im.height/random.randint(2, 3), resized_im.width/random.randint(2, 3)])
 
                 draw = ImageDraw.Draw(resized_im)
                 draw.text(text_size,
@@ -44,7 +52,7 @@ class MemeEngine(GeneratorInterface):
                 file, _ = os.path.splitext(img_path)
 
                 meme_out_file = f'{self.output_dir}/{file.split(
-                    '/')[-1]}-{datetime.datetime.now().strftime('%d-%m-%y-%H-%M-%S')}.jpeg'
+                    '/')[-1]}-{datetime.datetime.now().strftime(self.datetime_format)}.jpeg'
 
                 resized_im.save(meme_out_file)
 
@@ -57,3 +65,23 @@ class MemeEngine(GeneratorInterface):
             print(err)
             print('An exception occurred')
             raise
+
+    @staticmethod
+    def reading_from_binary(file) -> str | None:
+        """Reads an image from a binary format file and save as an Jpeg image file.
+
+        Returns:
+            str: Saved image's path.
+        """
+        try:
+            img_path = f'{datetime.datetime.now().strftime(
+                '%d-%m-%y-%H-%M-%S')}.jpeg'
+
+            with Image.open(io.BytesIO(file)) as im:
+                im.save(img_path)
+
+            return img_path
+        except Exception as err:
+            print(err)
+
+        return None
