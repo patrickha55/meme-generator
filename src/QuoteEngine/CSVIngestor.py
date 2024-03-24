@@ -7,7 +7,7 @@ import pandas
 
 
 class CSVIngestor(IngestorInterface):
-    """Ingestor for extracting text from a CSV file and transform into Quote models.add()
+    """Ingestor for extracting text from a CSV file and transform into Quote models.
 
     Args:
         IngestorInterface (class): Ingestor ABC.
