@@ -63,12 +63,12 @@ if __name__ == "__main__":
     try:
         parser = argparse.ArgumentParser()
 
-        parser.add_argument('-path', type=str,
+        parser.add_argument('-p', '--path', type=str,
                             help='The image path use for generating a meme.')
-        parser.add_argument('-body', type=str,
+        parser.add_argument('-b', '--body', type=str,
                             help='The quote to display inside a meme.')
 
-        parser.add_argument('-author', type=str,
+        parser.add_argument('-a', '--author', type=str,
                             help='The author to display under a quote.')
 
         args = parser.parse_args()
