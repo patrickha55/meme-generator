@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from Quote import Quote
+from QuoteEngine.Quote import Quote
 
 import os
 

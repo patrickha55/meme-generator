@@ -1,7 +1,7 @@
 from typing import List
-from IngestorException import IngestorException
-from IngestorInterface import IngestorInterface
-from Quote import Quote
+from QuoteEngine.IngestorException import IngestorException
+from QuoteEngine.IngestorInterface import IngestorInterface
+from QuoteEngine.Quote import Quote
 
 
 class TextIngestor(IngestorInterface):
