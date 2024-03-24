@@ -1,14 +1,18 @@
+import datetime
 import os
 import random
-from GeneratorInterface import GeneratorInterface
+from MemeGenerator.GeneratorInterface import GeneratorInterface
 from PIL import Image, ImageOps, ImageDraw
-from GeneratorException import GeneratorException
+from MemeGenerator.GeneratorException import GeneratorException
 
 
-class ImageCaptioner(GeneratorInterface):
+class MemeEngine(GeneratorInterface):
 
-    def __init__(self, out_file: str):
-        self.out_file = out_file
+    def __init__(self, output_dir: str):
+        self.output_dir = output_dir
+
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
 
     def make_meme(self, img_path: str, text: str, author: str, width=500) -> str:
         try:
@@ -37,7 +41,14 @@ class ImageCaptioner(GeneratorInterface):
                           font_size=20
                           )
 
-                resized_im.save(f'{self.out_file}.jpeg')
+                file, _ = os.path.splitext(img_path)
+
+                meme_out_file = f'{self.output_dir}/{file.split(
+                    '/')[-1]}-{datetime.datetime.now().strftime('%d-%m-%y-%H-%M-%S')}.jpeg'
+
+                resized_im.save(meme_out_file)
+
+                return meme_out_file
         except OSError as err:
             print('Unable to open the image using the provided path.')
             print(err)
